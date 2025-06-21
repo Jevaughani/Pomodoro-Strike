@@ -1,0 +1,38 @@
+{
+  "name": "pomodoro-strike",
+  "version": "1.0.0",
+  "description": "A modern, sleek Pomodoro timer built with vanilla JavaScript, HTML, and CSS. Strike through your tasks with focused productivity sessions!",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "open src/index.html",
+    "dev": "python -m http.server 8000 --directory .",
+    "serve": "npx http-server . -p 8000 -o src/index.html"
+  },
+  "keywords": [
+    "pomodoro",
+    "timer",
+    "productivity",
+    "task-management",
+    "focus",
+    "time-management",
+    "vanilla-javascript",
+    "html5",
+    "css3"
+  ],
+  "author": "Pomodoro Strike",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/pomodoro-strike.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/pomodoro-strike/issues"
+  },
+  "homepage": "https://github.com/yourusername/pomodoro-strike#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

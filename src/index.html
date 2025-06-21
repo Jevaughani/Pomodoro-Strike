@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Strike - Focus Timer</title>
+
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ICONS -->
+    <script src="https://kit.fontawesome.com/6f3103b13c.js" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">
+                <i class="fas fa-bolt"></i>
+                Pomodoro Strike
+            </h1>
+            <div class="header-controls">
+                <button class="todo-toggle-btn" id="todoToggleBtn">
+                    <i class="fas fa-tasks"></i>
+                    <span class="todo-count" id="todoCount">0</span>
+                </button>
+                <button class="settings-btn" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <!-- Todo Sidebar -->
+            <aside class="todo-sidebar" id="todoSidebar">
+                <div class="todo-header">
+                    <h3>Today's Tasks</h3>
+                    <button class="close-todo-btn" id="closeTodoBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="todo-content">
+                    <div class="todo-input-group">
+                        <input type="text" id="todoInput" placeholder="Add a new task..." maxlength="100">
+                        <button class="add-todo-btn" id="addTodoBtn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="todo-list" id="todoList">
+                        <!-- Todo items will be added here dynamically -->
+                    </div>
+                    <div class="todo-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Completed</span>
+                            <span class="stat-value" id="completedCount">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Remaining</span>
+                            <span class="stat-value" id="remainingCount">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Timer Section -->
+            <main class="main-content">
+                <!-- Mode Selector -->
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="pomodoro">
+                        <i class="fas fa-brain"></i>
+                        <span>Focus</span>
+                    </button>
+                    <button class="mode-btn" data-mode="shortBreak">
+                        <i class="fas fa-coffee"></i>
+                        <span>Short Break</span>
+                    </button>
+                    <button class="mode-btn" data-mode="longBreak">
+                        <i class="fas fa-bed"></i>
+                        <span>Long Break</span>
+                    </button>
+                </div>
+
+                <!-- Timer Display -->
+                <div class="timer-container">
+                    <div class="timer-circle">
+                        <svg class="progress-ring" width="300" height="300">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-bg" cx="150" cy="150" r="140" stroke-width="8"/>
+                            <circle class="progress-ring-fill" cx="150" cy="150" r="140" stroke-width="8"/>
+                        </svg>
+                        <div class="timer-display">
+                            <div class="time-left" id="timeLeft">25:00</div>
+                            <div class="mode-label" id="modeLabel">Focus Time</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <button class="control-btn primary" id="startBtn">
+                        <i class="fas fa-play"></i>
+                        <span>Start</span>
+                    </button>
+                    <button class="control-btn secondary" id="pauseBtn" style="display: none;">
+                        <i class="fas fa-pause"></i>
+                        <span>Pause</span>
+                    </button>
+                    <button class="control-btn secondary" id="resetBtn">
+                        <i class="fas fa-redo"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+
+                <!-- Session Info -->
+                <div class="session-info">
+                    <div class="session-counter">
+                        <span>Session</span>
+                        <div class="session-dots">
+                            <span class="session-dot" data-session="1"></span>
+                            <span class="session-dot" data-session="2"></span>
+                            <span class="session-dot" data-session="3"></span>
+                            <span class="session-dot" data-session="4"></span>
+                        </div>
+                    </div>
+                    <div class="total-time">
+                        <span>Total Focus Time Today</span>
+                        <div class="total-time-display" id="totalTime">00:00</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal-overlay" id="settingsModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button class="close-btn" id="closeSettings">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-content">
+                    <div class="setting-group">
+                        <label for="pomodoroTime">Focus Time (minutes)</label>
+                        <input type="number" id="pomodoroTime" min="1" max="60" value="25">
+                    </div>
+                    <div class="setting-group">
+                        <label for="shortBreakTime">Short Break (minutes)</label>
+                        <input type="number" id="shortBreakTime" min="1" max="30" value="5">
+                    </div>
+                    <div class="setting-group">
+                        <label for="longBreakTime">Long Break (minutes)</label>
+                        <input type="number" id="longBreakTime" min="1" max="60" value="15">
+                    </div>
+                    <div class="setting-group">
+                        <label for="autoStart">Auto-start breaks</label>
+                        <input type="checkbox" id="autoStart">
+                    </div>
+                    <div class="setting-group">
+                        <label for="notifications">Enable notifications</label>
+                        <input type="checkbox" id="notifications" checked>
+                    </div>
+                    <div class="setting-group">
+                        <label for="sound">Sound alerts</label>
+                        <select id="sound">
+                            <option value="bell">Bell</option>
+                            <option value="chime">Chime</option>
+                            <option value="digital">Digital</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" id="cancelSettings">Cancel</button>
+                    <button class="btn-primary" id="saveSettings">Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <div class="notification-content">
+                <i class="fas fa-bell"></i>
+                <span id="notificationText">Time's up!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="assets/js/script.js"></script>
+</body>
+</html> 
